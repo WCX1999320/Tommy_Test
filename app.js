@@ -18,10 +18,10 @@ const SERVER_ENDPOINT_REDIRECT = process.env.SERVER_ENDPOINT_REDIRECT || "localh
 const CLIENT_KEY = "awahrdz5tzywmmd2";
 
 app.get("/term-of-service", function (req, res) {
-    res.sendFile(__dirname + "/public/index.html");
+    res.sendFile(__dirname + "/public/term-of-service.html");
 });
 app.get("/privacy-policy", function (req, res) {
-    res.sendFile(__dirname + "/public/index.html");
+    res.sendFile(__dirname + "/public/privacy-policy.html");
 });
 
 app.get("/login", (req, res) => {
