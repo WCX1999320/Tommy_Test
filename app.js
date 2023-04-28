@@ -17,6 +17,13 @@ server.listen(port, () => {
 const SERVER_ENDPOINT_REDIRECT = process.env.SERVER_ENDPOINT_REDIRECT || "localhost:3000";
 const CLIENT_KEY = "awahrdz5tzywmmd2";
 
+app.get("/term-of-service", function (req, res) {
+    res.sendFile(__dirname + "/public/index.html");
+});
+app.get("/privacy-policy", function (req, res) {
+    res.sendFile(__dirname + "/public/index.html");
+});
+
 app.get("/login", (req, res) => {
     const csrfState = Math.random().toString(36).substring(2);
     res.cookie("csrfState", csrfState, { maxAge: 60000 });
@@ -28,8 +35,9 @@ app.get("/login", (req, res) => {
     url += "&response_type=code";
     url += `&redirect_uri=${encodeURIComponent(SERVER_ENDPOINT_REDIRECT)}`;
     url += "&state=" + csrfState;
-
-    res.redirect(url);
+    await res = res.redirect(url);
+    const axios = require('axios');
+    const res = await axios.get('http://localhost:3000/show')
 });
 
 app.get('/show', (req, res) => {
@@ -53,6 +61,7 @@ app.get('/show', (req, res) => {
         .then(json => {
             res.send(json);
         });
+
 })
 
 app.get('/refresh_token/', (req, res) => {
