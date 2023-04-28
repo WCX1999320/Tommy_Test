@@ -35,9 +35,7 @@ app.get("/login", (req, res) => {
     url += "&response_type=code";
     url += `&redirect_uri=${encodeURIComponent(SERVER_ENDPOINT_REDIRECT)}`;
     url += "&state=" + csrfState;
-    await res = res.redirect(url);
-    const axios = require('axios');
-    const res = await axios.get('http://localhost:3000/show')
+    res.redirect(url);
 });
 
 app.get('/show', (req, res) => {
