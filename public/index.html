@@ -11,12 +11,21 @@
         margin: 0 auto;
         text-align: center;
       }
-      a {
+      #tiktokLogin {
         display: inline-block;
         padding: 10px 20px;
         background-color: #008489;
         color: white;
         text-decoration: none;
+        border-radius: 5px;
+      }
+      #loginSuccess {
+        display: none;
+        background-color: #a8f436;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
         border-radius: 5px;
       }
       #logoutBtn {
@@ -31,10 +40,11 @@
     </style>
   </head>
   <body>
-    <div id="loginMessage"></div>
     <a id="tiktokLogin" href="/oauth">Continue with TikTok</a>
     <button id="loginSuccess" >Login Successfully!</button>
     <button id="logoutBtn" onclick="logout()">Logout</button>
+    <a href="/privacy-policy.html">Privacy Policy</a>
+    <a href="/term-of-service.html">Term of Service</a>
     <footer id="footer">
       <script>
         async function checkLoginStatus() {
@@ -80,22 +90,6 @@
 
         checkLoginStatus();
 
-        function getQueryParam(name) {
-          const urlSearchParams = new URLSearchParams(window.location.search);
-          return urlSearchParams.get(name);
-        }
-
-        const loginMessage = document.getElementById("loginMessage");
-        const loginStatus = getQueryParam("login");
-        if (loginStatus === "success") {
-          loginMessage.innerText = "Login was successful.";
-        }
-        if (loginStatus === "error") {
-          loginMessage.innerText = "Login failed. Please try again.";
-        }
-        if (loginStatus === "logout") {
-          loginMessage.innerText = "Logout was successful.";
-        }
       </script>
     </footer>
   </body>
