@@ -40,7 +40,7 @@ server.listen(port, () => {
 });
 
 app.get("/login", (req, res) => {
-  const isLoggedIn = req.session && req.session.user;
+  const isLoggedIn =  req.session.user;
   if (isLoggedIn) {
     res.json({
       isLoggedIn: true,
