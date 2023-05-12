@@ -1,20 +1,102 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Homepage</title>
-</head>
-<body>
-    <h1 align="center"> Study With Me</h1>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #008489;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      #logoutBtn {
+        display: none;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loginMessage"></div>
+    <a id="tiktokLogin" href="/oauth">Continue with TikTok</a>
+    <button id="loginSuccess" >Login Successfully!</button>
+    <button id="logoutBtn" onclick="logout()">Logout</button>
+    <footer id="footer">
+      <script>
+        async function checkLoginStatus() {
+          const response = await fetch("/login");
+          const data = await response.json();
 
-    <a id="login-div" href="/login" style="display: block;">Log in with TikTok</a>
+          if (data.isLoggedIn) {
+            document.getElementById("tiktokLogin").style.display = "none";
+            document.getElementById("loginSuccess").style.display = "block";
+            document.getElementById("logoutBtn").style.display = "block";
+          } else {
+            document.getElementById("tiktokLogin").style.display = "block";
+            document.getElementById("loginSuccess").style.display = "none";
+            document.getElementById("logoutBtn").style.display = "none";
+          }
+        }
 
+        async function logout() {
+          const response = await fetch("/checkLogin");
+          const data = await response.json();
+          console.log(data);
+          if (data.isLoggedIn) {
+            const open_id = data.user.open_id;
+            const access_token = data.user.access_token;
+            const logoutResponse = await fetch(
+              `/revoke?open_id=${open_id}&access_token=${access_token}`,
+              {
+                method: "GET",
+              }
+            );
 
-    <div position="relative;" bottom="0px;" margin="auto;">
-        <a id="Term-of-service" href="term-of-service.html" style="display: block;">Term of Service</a>
-        <a id="privacy-policy" href="privacy-policy.html" style="display: block;">Privacy Policy</a>
-    </div>
-</body>
+            if (logoutResponse.status === 200) {
+              document.cookie =
+                "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              console.log("logged out");
+              console.log(document.cookie);
+              window.location.href = "/?login=logout";
+            } else {
+              alert("Error logging out.");
+            }
+          }
+        }
+
+        checkLoginStatus();
+
+        function getQueryParam(name) {
+          const urlSearchParams = new URLSearchParams(window.location.search);
+          return urlSearchParams.get(name);
+        }
+
+        const loginMessage = document.getElementById("loginMessage");
+        const loginStatus = getQueryParam("login");
+        if (loginStatus === "success") {
+          loginMessage.innerText = "Login was successful.";
+        }
+        if (loginStatus === "error") {
+          loginMessage.innerText = "Login failed. Please try again.";
+        }
+        if (loginStatus === "logout") {
+          loginMessage.innerText = "Logout was successful.";
+        }
+      </script>
+    </footer>
+  </body>
 </html>
