@@ -39,7 +39,7 @@ server.listen(port, () => {
   console.log(`server started on port ${port}`);
 });
 
-app.get("/checkLogin", (req, res) => {
+app.get("/login", (req, res) => {
   const isLoggedIn = req.session && req.session.user;
   if (isLoggedIn) {
     res.json({
@@ -52,7 +52,7 @@ app.get("/checkLogin", (req, res) => {
 });
 
 app.get("/oauth", (req, res) => {
-  const DOMAIN = "adsgency-take-home.onrender.com";
+  const DOMAIN = "tommy-test-piye.onrender.com";
   const csrfState = Math.random().toString(36).substring(2);
   res.cookie("csrfState", csrfState, { maxAge: 60000 });
   const redirect = encodeURIComponent(`https://${DOMAIN}/tiktok`);
